@@ -26,7 +26,26 @@ function registerWithEmail(event) {
     if (mobile) localStorage.setItem("mobile", mobile);
 
     // Redirect to seat-selection.html
-    location.href = "seat-selection.html";
+    location.href = "seat-selection";
+}
+
+function newbooking() {
+
+    firstName = localStorage.getItem("firstName");
+    lastName = localStorage.getItem("lastName");
+    email = localStorage.getItem("email");
+    mobile = localStorage.getItem("mobile");
+    selectedSeat = localStorage.getItem("selectedSeat");
+
+    // Get form values
+    document.getElementById("firstName").value = firstName;
+    document.getElementById("lastName").value = lastName;
+    document.getElementById("email").value = email;
+    document.getElementById("mobile").value = mobile;
+    document.getElementById("selectedSeat").value = selectedSeat;
+
+    document.booking.submit();
+    
 }
 // --------------------------------------------------------------------------------
 
@@ -39,7 +58,7 @@ function registerWithEmail(event) {
       
 
     //   function selectSeat(seatNumber)----
-        function selectSeat(seatNumber) {
+        function selectSeatold(seatNumber) {
             console.log("Seat selected:", seatNumber);
             localStorage.setItem("selectedSeat", seatNumber);
 
@@ -48,6 +67,13 @@ function registerWithEmail(event) {
             localStorage.setItem("startTime", startTime);
 
             location.href = "confirmation.html";
+        }
+
+        function selectSeat(seatNumber) {
+            console.log("testing");
+            localStorage.setItem("selectedSeat", seatNumber);
+            //location.href = "confirmation";
+            newbooking();
         }
 // ---------------------------------------------------------------------------
 
@@ -74,6 +100,26 @@ function displayConfirmationMessage() {
         <p>Start Date/Time: ${startTime}</p>
         <p>Duration: ${duration} minutes</p>
         <p>Enjoy your time at the Central Zone, Level B2!</p>
+    `;
+}
+
+function extendBooking() {
+    // Retrieve other data from localStorage
+    const firstName = localStorage.getItem("firstName");
+    const selectedSeat = localStorage.getItem("selectedSeat");
+    const startTime = new Date().toLocaleString(); // Get current device time as start time
+    const duration = 60; // Set booking duration (e.g., 60 minutes)
+
+    // Get the confirmation message element
+    const confirmationMessage = document.getElementById("confirmationMessage");
+
+    // Build and display the confirmation message
+    confirmationMessage.innerHTML = `
+        <p>Thank you, ${firstName}!</p>
+        <p>Your selected seat: ${selectedSeat}</p>
+        <p>Start Date/Time: ${startTime}</p>
+        <p>Duration: ${duration} minutes</p>
+        <p>You have extended by another hour</p>
     `;
 }
 

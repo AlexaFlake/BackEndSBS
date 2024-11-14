@@ -19,3 +19,12 @@ model Post {
   title     String
   content   String
 }
+
+model Booking {
+   id        Int       @id @default(autoincrement())
+   firstName String
+   lastName String
+   email String
+   mobile String
+   selectedSeat Int
+}

@@ -22,6 +22,9 @@ const prisma = new PrismaClient();
 // Main landing page
 app.get('/', async function(req, res) {
 
+  res.render('pages/index');
+
+  /* 
     // Try-Catch for any errors
     try {
         // Get all blog posts
@@ -39,6 +42,7 @@ app.get('/', async function(req, res) {
         res.render('pages/home');
         console.log(error);
       } 
+        */
 });
 
 // About page
@@ -96,5 +100,50 @@ app.post("/delete/:id", async (req, res) => {
     }
   });
 
+app.get('/seat-selection', async function(req, res) {
+
+  res.render('pages/seat-selection');
+});
+
+app.get('/confirmation', async function(req, res) {
+
+  res.render('pages/confirmation');
+});
+
+// Create a new post
+app.post('/newbooking', async function(req, res) {
+    
+  // Try-Catch for any errors
+  try {
+      // Get the title and content from submitted form
+      const { firstName, lastName, email, mobile, selectedSeat } = req.body;
+
+      selectedSeatNumber = parseInt(selectedSeat)
+      const booking = await prisma.booking.create({
+          data: { firstName, lastName, email, mobile, selectedSeat: selectedSeatNumber },
+      });
+
+      res.render('pages/confirmation', { booking });
+      
+    } catch (error) {
+      console.log(error);
+      res.render('pages/index');
+    }
+
+});
+
+app.get('/booking/:id', async function(req,res) {
+
+    const { id } = req.params;
+    
+    try {
+        booking = await prisma.booking.findUnique({
+            where: { id: parseInt(id) },
+        });
+        res.render('pages/booking', { booking });
+      } catch {
+        console.log(error);
+      }
+});
 // Tells the app which port to run on
 app.listen(8080);
